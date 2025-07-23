@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>지뢰찾기 포트폴리오</title>
+  <style>
+    table { border-collapse: collapse; margin: 20px auto; }
+    td { width: 40px; height: 40px; text-align: center; vertical-align: middle; border: 1px solid #333; cursor: pointer; font-weight: bold; font-size: 18px; }
+    .mine { background: red; color: white; }
+    .safe { background: lightgreen; }
+    #status { text-align: center; font-size: 20px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center">💣 나에 대한 포트폴리오 지뢰찾기</h1>
+  <p style="text-align:center">지뢰를 피해 하나만 성공하면 저에 대한 정보가 열립니다!</p>
+
+  <table id="minefield">
+  </table>
+
+  <div id="status"></div>
+
+  <script>
+    const table = document.getElementById("minefield");
+    const size = 3;
+    const mineRow = Math.floor(Math.random() * size);
+    const mineCol = Math.floor(Math.random() * size);
+
+    for (let i = 0; i < size; i++) {
+      const row = document.createElement("tr");
+      for (let j = 0; j < size; j++) {
+        const cell = document.createElement("td");
+        cell.onclick = function() {
+          if (i === mineRow && j === mineCol) {
+            cell.className = "mine";
+            cell.innerText = "💥";
+            document.getElementById("status").innerText = "실패! 다시 시도해보세요.";
+          } else {
+            cell.className = "safe";
+            cell.innerText = "✅";
+            document.getElementById("status").innerHTML = "성공! <a href='profile.html'>저에 대한 정보 보러 가기</a>";
+          }
+          Array.from(document.querySelectorAll('td')).forEach(td => td.onclick = null);
+        };
+        row.appendChild(cell);
+      }
+      table.appendChild(row);
+    }
+  </script>
+</body>
+</html>
