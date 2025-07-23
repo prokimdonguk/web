@@ -1,9 +1,11 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>지뢰찾기 포트폴리오</title>
   <style>
+    /* 간단한 스타일링 */
     table { border-collapse: collapse; margin: 20px auto; }
     td { width: 40px; height: 40px; text-align: center; vertical-align: middle; border: 1px solid #333; cursor: pointer; font-weight: bold; font-size: 18px; }
     .mine { background: red; color: white; }
@@ -13,33 +15,39 @@
 </head>
 <body>
   <h1 style="text-align:center">💣 나에 대한 포트폴리오 지뢰찾기</h1>
-  <p style="text-align:center">지뢰를 피해 하나만 성공하면 저에 대한 정보가 열립니다!</p>
+  <p style="text-align:center">단 하나의 안전한 칸을 찾아 저에 대한 정보를 확인하세요!</p>
 
+  <!-- 지뢰찾기 3x3 그리드 -->
   <table id="minefield">
+    <!-- JS로 생성됨 -->
   </table>
 
+  <!-- 상태 메시지 -->
   <div id="status"></div>
 
   <script>
     const table = document.getElementById("minefield");
     const size = 3;
-    const mineRow = Math.floor(Math.random() * size);
-    const mineCol = Math.floor(Math.random() * size);
+
+    // 무작위로 안전한 한 칸 지정 (나머지는 지뢰)
+    const safeRow = Math.floor(Math.random() * size);
+    const safeCol = Math.floor(Math.random() * size);
 
     for (let i = 0; i < size; i++) {
       const row = document.createElement("tr");
       for (let j = 0; j < size; j++) {
         const cell = document.createElement("td");
         cell.onclick = function() {
-          if (i === mineRow && j === mineCol) {
-            cell.className = "mine";
-            cell.innerText = "💥";
-            document.getElementById("status").innerText = "실패! 다시 시도해보세요.";
-          } else {
+          if (i === safeRow && j === safeCol) {
             cell.className = "safe";
             cell.innerText = "✅";
             document.getElementById("status").innerHTML = "성공! <a href='profile.html'>저에 대한 정보 보러 가기</a>";
+          } else {
+            cell.className = "mine";
+            cell.innerText = "💥";
+            document.getElementById("status").innerText = "실패! 다시 시도해보세요.";
           }
+          // 모든 셀 클릭 비활성화
           Array.from(document.querySelectorAll('td')).forEach(td => td.onclick = null);
         };
         row.appendChild(cell);
